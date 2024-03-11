@@ -1,0 +1,68 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Module table</h6>
+          <a href="{% url "module_create" %}" class="btn btn-primary float-right btn-sm">Add Module</a>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Project Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Module name</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estimated Hours</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                  {% comment %} <th class="text-secondary opacity-7"></th> {% endcomment %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for module in module  %}
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{module.project}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{module.module_name}}</p>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <span class="text-secondary text-xs font-weight-bold">{{module.description}}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">{{module.estimated_hours}}</span>
+                    </td>
+                    <td class="align-middle">
+                      <span class="badge badge-sm bg-gradient-success">{{module.status}}</span>
+                    </td>
+                    <td class="align-middle">
+                      <span class="text-secondary text-xs font-weight-bold">{{module.startDate}}</span>
+                    </td>
+                    <td class="align-middle">
+                      <a href="{% url "module_update" module.id %}" class="btn btn-sm btn-outline-warning text-secondary">Edit</a>
+                      <a href="{% url "module_detail" module.id %}" class="btn btn-sm btn-outline-info">Detail</a>
+                      <a href="{% url "module_delete" module.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

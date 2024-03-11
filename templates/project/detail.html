@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+    crossorigin="anonymous"
+    />
+</head>
+<body>
+    <div class="d-flex justify-content-center" style="margin-top: 5%;">
+      <div class="card" style="width: 18rem;" >
+        <div class="card-body">
+          <h5 class="card-title">{{project.name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{project.description}}</h6>
+          <p class="card-text mt-3">Technology: {{project.technology}}</p>
+          <p class="card-text mt-3">Estimated Hours: {{project.estimated_hours}}</p>
+          <p class="card-text">Start Date: {{project.startDate}}</p>
+          <p class="card-text">End Date: {{project.endDate}}</p>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
