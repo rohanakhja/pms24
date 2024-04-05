@@ -26,6 +26,15 @@ urlpatterns = [
     path("update_task/<int:pk>",TaskUpdateview.as_view(),name="task_update"),
     path("detail_task/<int:pk>/",TaskDetailView.as_view(),name="task_detail"),
     path("delete_task/<int:id>",views.delete_task,name="task_delete"),
+    # path("total_proj",views.total_proj,name="total_projects"),
     
     path("task_assign/",TaskAssignView.as_view(),name="task_assign"),
+    
+    path("list_bug/",BugListView.as_view(),name="bug_list"),
+    path("add_bug/",BugCreationView.as_view(),name="bug_add"),
+    path("update_bug/<int:pk>",BugUpdateview.as_view(),name="bug_update"),
+    path("detail_bug/<int:pk>/",BugDetailView.as_view(),name="bug_detail"),
+    path("delete_bug/<int:id>",views.delete_bug,name="bug_delete"),
+    # path("change_status/<int:id>", views.bugStatusUpdateView, name="change_status"),
+    
 ]

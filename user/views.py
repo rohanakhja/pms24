@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView
-from project.models import Project,UserTask,Task
+from project.models import Project,UserTask,Task,ProjectModule,Status,Bug
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -20,14 +20,14 @@ class ManagerRegisterView(CreateView):
     template_name = "user/manager_register.html"
     success_url = "/user/login/"
     
-    def form_valid(self, form):
-        email = form.cleaned_data.get('email')
-        # print("email..",email)
-        if sendMail(email):
-            print("Email sent successfully")
-            return super().form_valid(form)
-        else:
-            return super().form_valid(form)
+    # def form_valid(self, form):
+    #     email = form.cleaned_data.get('email')
+    #     # print("email..",email)
+    #     if sendMail(email):
+    #         print("Email sent successfully")
+    #         return super().form_valid(form)
+    #     else:
+    #         return super().form_valid(form)
     
     
 class DeveloperRegisterView(CreateView):
@@ -67,18 +67,72 @@ class ManagerDashboardView(ListView):
     
     def get(self, request, *args, **kwargs):
         #logic to get all the projects
+        total_task = Task.objects.count()
+        total_projects = Project.objects.count()
+        total_module = ProjectModule.objects.count()
+        total_developer = User.objects.filter(is_developer = True).count()
         project = Project.objects.all() #select * from project
+        # project = ProjectModule.objects.all()
+        project_module = ProjectModule.objects.all()
+        task = Task.objects.all()
+        usertask = UserTask.objects.all()
+        bug = Bug.objects.all()
+      
+        
+        tasks_with_developers = []
+        tasks = Task.objects.all()
+        for task in tasks:
+            user_task = UserTask.objects.filter(task=task).first()
+            developer_name = user_task.user.username if user_task else None
+           
+            tasks_with_developers.append({'task': task, 'developer_name': developer_name  })
+        # status = Status.objects.all()
         return render(request,"user/manager_dashboard.html",{
-            'project':project
+            'total_task': total_task,
+            'total_developer':total_developer,
+            'total_module': total_module,
+            'total_projects': total_projects,
+            'project':project,
+            'project_module': project_module,
+            'task': task,
+            'usertask':usertask,
+            'tasks_with_developers': tasks_with_developers,
+            'bug': bug,
+            # 'status': status,
+            
         })
+        
     
     template_name = "user/manager_dashboard.html"
+    # context_object_name = "tasks_with_users"
     
 class DeveloperDashboardView(ListView):
     
     def get(self, request, *args, **kwargs):
-        user_tasks = UserTask.objects.filter(user=request.user) #Filter task for the current developer
+        user_tasks = UserTask.objects.filter(user=request.user)
+        total_task = Task.objects.count()
+        total_projects = Project.objects.count()
+        total_module = ProjectModule.objects.count()
+        total_developer = User.objects.filter(is_developer = True).count()
+        project = Project.objects.all() #select * from project
+        # project = ProjectModule.objects.all()
+        project_module = ProjectModule.objects.all()
+        task = Task.objects.all()#Filter task for the current developer
+        bug = Bug.objects.all()
       
-        return render(request,"user/developer_dashboard.html",{'user_tasks':user_tasks})
+        return render(request,"user/developer_dashboard.html",{
+            'user_tasks':user_tasks,
+            'total_task': total_task,
+            'total_developer':total_developer,
+            'total_module': total_module,
+            'total_projects': total_projects,
+            'project':project,
+            'project_module': project_module,
+            'task': task,
+            'bug': bug,
+        })
     
     template_name = "user/developer_dashboard.html"
+ 
+
+

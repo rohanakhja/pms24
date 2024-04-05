@@ -11,5 +11,7 @@ urlpatterns = [
     path("developer_dashboard/",DeveloperDashboardView.as_view(),name="developer_dashboard"),
     path("logout/",UserLogoutView.as_view(),name="logout"),
     
+    # path("manager-dashboard/", views.   , name='manager_dashboard'),
+    
     # path("sendmail/",views.sendMail,name="sendmail"),
 ]

@@ -7,19 +7,98 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
     crossorigin="anonymous"
     />
+    <style>
+         body {
+            background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); /* Specify the path to your background image */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the background image */
+        }
+        .container {
+            padding-left: 20px; /* Adjust this value as needed */
+            padding-right: 20px; /* Adjust this value as needed */
+            background-color: #ffffff; /* Light background color */
+        }
+        .module {
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-style: italic;
+        }
+        .task {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .bug {
+            margin-left: 40px;
+            margin-bottom: 5px;
+            text-decoration: underline;
+        }
+        .module-name {
+            font-size: larger;
+            font-style: italic;
+            font-weight: bold; /* Make the module name bold */
+        }
+        /* Custom colors */
+        .description,
+        .technology,
+        .date,
+        .project-name {
+            font-weight: bold; /* Make the text bold */
+        }
+        .description {
+            color: #dc3545; /* Red */
+        }
+        .technology {
+            color: #ffc107; /* Yellow */
+        }
+        .date {
+            color: #17a2b8; /* Cyan */
+        }
+    </style>
 </head>
 <body>
-    <div class="d-flex justify-content-center" style="margin-top: 5%;">
-      <div class="card" style="width: 18rem;" >
-        <div class="card-body">
-          <h5 class="card-title">{{project.name}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{project.description}}</h6>
-          <p class="card-text mt-3">Technology: {{project.technology}}</p>
-          <p class="card-text mt-3">Estimated Hours: {{project.estimated_hours}}</p>
-          <p class="card-text">Start Date: {{project.startDate}}</p>
-          <p class="card-text">End Date: {{project.endDate}}</p>
+    <div class="container mt-5">
+        <div class="mt-5">
+          <h3>Project</h3>
+          <ul class="list-group">
+            <li class="list-group-item module project-name"><strong>{{ project.name }}</strong></li>
+            <li class="list-group-item module description">Description: {{ project.description }}</li>
+            <li class="list-group-item module technology">Technology: {{ project.technology }}</li>
+            <li class="list-group-item module date">Start Date: {{ project.startDate }}</li>
+            <li class="list-group-item module date">End Date: {{ project.endDate }}</li>
+          </ul>
         </div>
-      </div>
+        <div class="mt-5">
+            <h3>Modules</h3>
+            <ul class="list-group">
+                {% for module in project.projectmodule_set.all %}
+                <li class="list-group-item module module-name">{{ module.module_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mt-5">
+            <h3>Tasks</h3>
+            {% for module in project.projectmodule_set.all %}
+            <h4 class="module-name">{{ module.module_name }}</h4>
+            <ul class="list-group">
+                {% for task in module.task_set.all %}
+                <li class="list-group-item task">
+                    <strong>Task Name : {{ task.task_name }}</strong> 
+                    <span class="badge badge-info">Status: {{ task.status }}</span> 
+                    <span class="badge badge-warning">Priority: {{ task.priority }}</span>
+                    <ul class="list-group mt-2">
+                        {% for bug in task.bug_set.all %}
+                        <li class="list-group-item bug">
+                            <span>Bug : {{ bug.bug_name }}</span> 
+                            <span class="badge badge-info">Status: {{ bug.status }}</span> 
+                            <span class="badge badge-warning">Priority: {{ bug.priority }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

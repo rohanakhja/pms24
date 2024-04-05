@@ -5,8 +5,8 @@ from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from user.models import User
-from .models import Project,ProjectTeam,ProjectModule,Task,UserTask,Status
-from .forms import ProjectCreationForm,ProjectTeamCreationForm,ModuleCreationForm,TaskCreationForm,TaskAssignForm,ProjectStatusCreationForm
+from .models import Project,ProjectTeam,ProjectModule,Task,UserTask,Status,Bug
+from .forms import ProjectCreationForm,ProjectTeamCreationForm,ModuleCreationForm,TaskCreationForm,TaskAssignForm,ProjectStatusCreationForm,BugCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import UpdateView
@@ -160,3 +160,49 @@ class TaskAssignView(CreateView):
     form_class = TaskAssignForm
     template_name = "project/task_assign.html"
     success_url = "/project/list"
+    
+class BugListView(ListView):
+    model = Bug
+    template_name = "project/list_bug.html"
+    context_object_name = "bug"
+    
+
+class BugCreationView(CreateView):
+    model = Bug
+    form_class = BugCreationForm
+    template_name = "project/add_bug.html"
+    success_url = "/project/list_bug"
+    
+class BugUpdateview(UpdateView):
+    model = Bug
+    form_class = BugCreationForm
+    template_name = "project/update_bug.html"
+    success_url = "/project/list_bug"
+    
+class BugDetailView(DetailView):
+   model = Bug
+   context_object_name = "bug"
+   template_name = "project/detail_bug.html"
+   
+def delete_bug(request,id):
+    bug = Bug.objects.get(id=id)
+    
+    bug.delete()
+    
+    return HttpResponseRedirect("/project/list_bug")
+
+# def bugStatusUpdateView(request,id):
+#     bug = Bug.objects.get(id=id)
+    
+#     if bug.status.status_id == 1:
+#         bug.status_id = 2
+#     elif bug.status.status_id == 2:
+#         bug.status_id = 3
+#     elif bug.status.status_id == 3:
+#         bug.status_id = 4
+        
+#     bug.save()
+    
+#     return redirect(reverse('developer_dashboard'))
+
+

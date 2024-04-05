@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project,ProjectTeam,ProjectModule,Task,UserTask,Status
+from .models import Project,ProjectTeam,ProjectModule,Task,UserTask,Status,Bug
 from user.models import User
 
 class ProjectCreationForm(forms.ModelForm):
@@ -39,4 +39,9 @@ class TaskAssignForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=User.objects.filter(is_developer=True))
     class Meta:
         model = UserTask
+        fields = '__all__'
+        
+class BugCreationForm(forms.ModelForm):
+    class Meta:
+        model = Bug
         fields = '__all__'

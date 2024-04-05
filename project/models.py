@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
-
+# from django.utils import timezone
+# default_user_value = timezone.now
 # Create your models here.
 techChoices = (
 ("Python","Python"),
@@ -73,11 +74,13 @@ class Task(models.Model):
     project_module = models.ForeignKey(ProjectModule,on_delete=models.CASCADE)
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     task_name = models.CharField(max_length=100)
+    
     priority = models.CharField(max_length=100,choices=priorityChoices)
     description = models.TextField()
     status = models.ForeignKey(Status,on_delete=models.CASCADE)
     totalMinutes = models.PositiveIntegerField()
     is_assigned = models.BooleanField(default=False)
+    
     
     class Meta:
         db_table="task"
@@ -85,6 +88,25 @@ class Task(models.Model):
     def __str__(self):
         return self.task_name
         
+
+    
+class Bug(models.Model):
+    project_module = models.ForeignKey(ProjectModule, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    bug_name = models.CharField(max_length=100)
+    priority = models.CharField(max_length=100, choices=priorityChoices)
+    description = models.TextField()
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    totalMinutes = models.PositiveIntegerField()
+    is_assigned = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "bug"
+        
+    def __str__(self):
+        return self.bug_name
+    
 class UserTask(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task = models.ForeignKey(Task,on_delete=models.CASCADE)
